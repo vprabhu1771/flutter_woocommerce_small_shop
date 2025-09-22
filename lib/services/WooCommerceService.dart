@@ -42,6 +42,21 @@ class WooCommerceService {
     }
   }
 
+  /// Fetch brands
+  Future<List<dynamic>> getBrands() async {
+    try {
+      final response = await _dio.get("/products/brands");
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception("Failed to load brands: ${response.data}");
+      }
+    } on DioError catch (e) {
+      throw Exception("Dio error: ${e.response?.data ?? e.message}");
+    }
+  }
+
   /// Fetch products
   Future<List<dynamic>> getProducts() async {
     try {
