@@ -27,6 +27,21 @@ class WooCommerceService {
     );
   }
 
+  /// Fetch catgories
+  Future<List<dynamic>> getCategories() async {
+    try {
+      final response = await _dio.get("/products/categories");
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception("Failed to load categories: ${response.data}");
+      }
+    } on DioError catch (e) {
+      throw Exception("Dio error: ${e.response?.data ?? e.message}");
+    }
+  }
+
   /// Fetch products
   Future<List<dynamic>> getProducts() async {
     try {
