@@ -46,7 +46,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("WooCommerce Products")),
+      // appBar: AppBar(title: const Text("WooCommerce Products")),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(

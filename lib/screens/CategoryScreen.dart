@@ -64,7 +64,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      // appBar: AppBar(title: Text(widget.title)),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
