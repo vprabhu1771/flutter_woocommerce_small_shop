@@ -27,6 +27,69 @@ class WooCommerceService {
     );
   }
 
+  // Register new customer
+  Future<Map<String, dynamic>> registerUser(Map<String, dynamic> userData) async {
+    try {
+      final response = await _dio.post(
+        "/customers", // ✅ since baseUrl already has /wc/v3
+        data: jsonEncode(userData),
+      );
+
+      return response.data;
+    } on DioException catch (e) {
+      return {
+        "error": true,
+        "message": e.response?.data ?? e.message,
+      };
+    }
+  }
+
+  // Login user (JWT)
+  Future<Map<String, dynamic>> loginUser(String username, String password) async {
+    try {
+      final response = await _dio.post(
+        "http://192.168.1.98/wordpress-6.8.2/wordpress/wp-json/jwt-auth/v1/token",
+        data: jsonEncode({
+          "username": username,
+          "password": password,
+        }),
+        options: Options(
+          headers: {"Content-Type": "application/json"},
+        ),
+      );
+
+      print(response.data);
+
+      return response.data;
+    } on DioException catch (e) {
+
+      print(e.response?.data ?? e.message);
+
+      return {
+        "error": true,
+        "message": e.response?.data ?? e.message,
+      };
+    }
+  }
+
+  // Get customer details by email
+  Future<Map<String, dynamic>> getCustomerByEmail(String email) async {
+    try {
+      final response = await _dio.get(
+        "/customers",
+        queryParameters: {"email": email},
+      );
+
+      if (response.statusCode == 200 && response.data.isNotEmpty) {
+        return response.data[0]; // WooCommerce returns a list, pick first
+      } else {
+        throw Exception("Customer not found");
+      }
+    } on DioException catch (e) {
+      throw Exception("Failed to fetch customer: ${e.response?.data ?? e.message}");
+    }
+  }
+
   /// Fetch catgories
   Future<List<dynamic>> getCategories() async {
     try {
