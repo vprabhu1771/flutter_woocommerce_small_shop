@@ -72,6 +72,19 @@ class WooCommerceService {
     }
   }
 
+  Future<Map<String, dynamic>> getCustomerById(int id) async {
+    try {
+      final response = await _dio.get("/customers/$id");
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception("Failed to load customer");
+      }
+    } on DioException catch (e) {
+      throw Exception("Dio error: ${e.response?.data ?? e.message}");
+    }
+  }
+
   // Get customer details by email
   Future<Map<String, dynamic>> getCustomerByEmail(String email) async {
     try {
